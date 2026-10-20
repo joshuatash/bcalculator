@@ -5,20 +5,165 @@
   <meta charset="UTF-8">
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#ff9500">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0a0a36">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="jstyle.css">
-  <title>Calculator</title>
+  <title>Calculator - Created by Tash</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      touch-action: manipulation;
+    }
+
+    body {
+      background: #000;
+      font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      height: 100dvh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .calculator {
+      background: linear-gradient(to bottom, rgb(10, 10, 54), darkblue, lightblue);
+      width: 100%;
+      height: 100dvh;
+      max-width: 430px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom) 16px;
+    }
+
+    #display {
+      flex: none !important;
+      height: 110px !important;
+      min-height: 110px !important;
+      width: 100%;
+      background: #a7b99c;
+      color: yellow;
+      border: none;
+      font-size: 52px;
+      text-align: right;
+      outline: none;
+      padding: 20px 14px;
+      font-weight: 300;
+      border-radius: 16px;
+      margin-bottom: 16px;
+    }
+
+    /* Tash text styling */
+    #display::placeholder {
+      color: yellow;
+      opacity: 0.85;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+    }
+
+    @media(min-width:500px) {
+      .calculator {
+        height: auto;
+        border-radius: 30px;
+        padding: 20px;
+        margin: 20px;
+      }
+
+      #display {
+        font-size: 52px;
+        background: #a7b99c;
+        border-radius: 16px;
+        flex: none;
+        height: 90px;
+        margin-bottom: 16px;
+      }
+
+      #display::placeholder {
+        font-size: 20px;
+      }
+    }
+
+    @media(max-width:499px) {
+      #display {
+        font-size: 48px;
+      }
+
+      #display::placeholder {
+        font-size: 18px;
+      }
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding-bottom: 10px;
+    }
+
+    button {
+      aspect-ratio: 1 / 1;
+      border: none;
+      border-radius: 50%;
+      font-size: 28px;
+      font-weight: 400;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:active {
+      filter: brightness(130%);
+    }
+
+    .num {
+      background: #333333;
+      color: white;
+    }
+
+    .op {
+      background: linear-gradient(to top, rgb(1, 40, 1), green, rgb(3, 241, 3));
+      color: white;
+    }
+
+    .clear {
+      background: linear-gradient(to right, rgb(255, 0, 123), rgb(199, 128, 190), rgb(255, 0, 255));
+      color: white;
+    }
+
+    .equal {
+      background: linear-gradient(to top, rgb(1, 40, 1), green, rgb(3, 241, 3));
+      color: white;
+    }
+
+    .zero {
+      grid-column: span 2;
+      aspect-ratio: 2.15 / 1;
+      border-radius: 40px;
+      text-align: left;
+      padding-left: 36px;
+    }
+
+    .func {
+      background: linear-gradient(to top, rgb(1, 40, 1), green, rgb(3, 241, 3));
+      color: white;
+    }
+
+    html,
+    body {
+      overscroll-behavior: none;
+    }
+  </style>
 </head>
 
 <body>
   <div class="calculator">
-    <input type="text" id="display" placeholder="0" readonly>
+    <input type="text" id="display" placeholder="Created by: Tash" readonly>
     <div class="buttons">
       <button class="clear" onclick="clearDisplay()">AC</button>
       <button class="clear" onclick="deleteOne()">⌫</button>
-      <button class="func" onclick="percent()">%</button>
+      <button class="func" onclick="append('%')">%</button>
       <button class="op" onclick="append('/')">÷</button>
 
       <button class="num" onclick="append('7')">7</button>
@@ -43,21 +188,21 @@
   </div>
   <script>
     const display = document.getElementById("display");
-    function append(v) { if (display.value === "Error") display.value = ""; display.value += v; autoResize(); }
-    function clearDisplay() { display.value = ""; autoResize(); }
-    function deleteOne() { display.value = display.value.slice(0, -1); autoResize(); }
-    function percent() { if (!isNaN(display.value) && display.value !== "") display.value = parseFloat(display.value) / 100; else display.value += "%"; autoResize(); }
+    function append(v) {
+      if (display.value === "Error") display.value = "";
+      display.value += v;
+    }
+    function clearDisplay() { display.value = ""; }
+    function deleteOne() { display.value = display.value.slice(0, -1); }
     function calculate() {
       try {
-        let expr = display.value.replace(/(\d+(\.\d+)?)%/g, "($1/100)");
+        let expr = display.value;
+        expr = expr.replace(/(\d+(\.\d+)?)%/g, "($1/100)");
         expr = expr.replace(/(\d+(\.\d+)?)\s*([\+\-])\s*\((\d+(\.\d+)?)\/100\)/g, (m, n1, _, op, n2) => n1 + op + "(" + n1 + "*" + n2 + "/100)");
-        let r = eval(expr); display.value = Number.isInteger(r) ? r : parseFloat(r.toFixed(8)); autoResize();
+        let r = eval(expr);
+        display.value = Number.isInteger(r) ? r : parseFloat(r.toFixed(8));
+        if (navigator.vibrate) navigator.vibrate(20);
       } catch { display.value = "Error"; }
-    }
-    function autoResize() {
-      // shrink font if number is too long
-      if (display.value.length > 9) { display.style.fontSize = "10vw"; }
-      else { display.style.fontSize = ""; }
     }
     if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
   </script>
