@@ -1,4 +1,4 @@
-  * { 
+* { 
     margin:0; 
     padding:0; 
     box-sizing:border-box; 
@@ -21,19 +21,25 @@
     max-width: 430px;
     display:flex;
     flex-direction:column;
+    justify-content: flex-end; /* FIX 1: push display + buttons to bottom */
     padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom) 16px;
   }
   #display{
-    flex:1;
+    /* FIX 2: removed flex:1, set fixed small height like Windows */
+    flex: none !important;
+    height: 110px !important;
+    min-height: 110px !important;
     width:100%;
     background:#a7b99c; 
     color:yellow;
     border:none;
-    font-size: 18vw;
+    font-size: 52px; /* FIX 3: fixed size, not 18vw */
     text-align:right;
     outline:none;
-    padding:20px 10px;
-    font-weight:200;
+    padding:20px 14px;
+    font-weight:300;
+    border-radius:16px;
+    margin-bottom:16px;
   }
   /* On desktop keep it small */
   @media(min-width:500px){
@@ -44,15 +50,15 @@
         margin:20px; 
     }
     #display{ 
-        font-size:56px; 
-       background:#a7b99c;  
+        font-size:52px; 
+        background:#a7b99c;  
         border-radius:16px; 
         flex:none; height:90px; 
         margin-bottom:16px; }
   }
   @media(max-width:499px){
     #display{ 
-        font-size: clamp(40px, 14vw, 80px); 
+        font-size: 48px; /* smaller on phone */
     }
   }
 
@@ -105,3 +111,4 @@
   html, body{ 
     overscroll-behavior: none; 
 }
+
