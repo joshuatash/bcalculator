@@ -1,0 +1,107 @@
+  * { 
+    margin:0; 
+    padding:0; 
+    box-sizing:border-box; 
+    touch-action: manipulation; 
+}
+  body {
+    background:#000;
+    font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    height: 100dvh;
+    width: 100vw;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+  }
+  .calculator{
+   background: linear-gradient(to bottom, rgb(10, 10, 54), darkblue, lightblue); 
+    width:100%;
+    height:100dvh;
+    max-width: 430px;
+    display:flex;
+    flex-direction:column;
+    padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom) 16px;
+  }
+  #display{
+    flex:1;
+    width:100%;
+    background:#a7b99c; 
+    color:yellow;
+    border:none;
+    font-size: 18vw;
+    text-align:right;
+    outline:none;
+    padding:20px 10px;
+    font-weight:200;
+  }
+  /* On desktop keep it small */
+  @media(min-width:500px){
+    .calculator{ 
+        height:auto; 
+        border-radius:30px; 
+        padding:20px; 
+        margin:20px; 
+    }
+    #display{ 
+        font-size:56px; 
+       background:#a7b99c;  
+        border-radius:16px; 
+        flex:none; height:90px; 
+        margin-bottom:16px; }
+  }
+  @media(max-width:499px){
+    #display{ 
+        font-size: clamp(40px, 14vw, 80px); 
+    }
+  }
+
+  .buttons{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding-bottom: 10px;
+  }
+  button{
+    aspect-ratio: 1 / 1;
+    border:none;
+    border-radius: 50%;
+    font-size: 28px;
+    font-weight:400;
+    cursor:pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  button:active{ 
+    filter: brightness(130%); 
+}
+  .num{ 
+    background:#333333; 
+    color:white; 
+}
+  .op{ 
+    background: linear-gradient(to top, rgb(1, 40, 1), green, rgb(3, 241, 3) ); 
+    color:white; 
+}
+  .clear{ 
+  background: linear-gradient(to right, rgb(255, 0, 123), rgb(199, 128, 190), rgb(255, 0, 255));  
+    color:white; 
+}
+  .equal{ 
+    background: linear-gradient(to top, rgb(1, 40, 1), green, rgb(3, 241, 3) ); 
+    color:white; 
+}
+  .zero{ 
+    grid-column: span 2; 
+    aspect-ratio: 2.15 / 1; 
+    border-radius: 40px; 
+    text-align:left; 
+    padding-left:36px; 
+}
+.func{ 
+    background: linear-gradient(to top, rgb(1, 40, 1), green, rgb(3, 241, 3) ); 
+    color:white; 
+}
+  /* Prevent Chrome pull-to-refresh */
+  html, body{ 
+    overscroll-behavior: none; 
+}
